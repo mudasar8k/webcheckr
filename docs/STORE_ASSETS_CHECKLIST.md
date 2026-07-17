@@ -12,22 +12,28 @@ Shipped in the extension package and declared in `manifest.json`.
 
 | Size | File | Status | Used for |
 | --- | --- | --- | --- |
-| 16×16 | `icons/icon16.png` | ✅ Real logo (4% padding) | Favicon / toolbar |
-| 48×48 | `icons/icon48.png` | ✅ Real logo (8% padding) | Extensions management page + popup header |
-| 128×128 | `icons/icon128.png` | ✅ Real logo (10% padding) | Web Store listing + install dialog |
+| 16×16 | `icons/icon16.png` | ✅ **Simplified mark** | Toolbar (1x), favicon |
+| 32×32 | `icons/icon32.png` | ✅ Full logo (6% padding) | Toolbar (2x / HiDPI), favicon |
+| 48×48 | `icons/icon48.png` | ✅ Full logo (8% padding) | Extensions management page + popup header |
+| 128×128 | `icons/icon128.png` | ✅ Full logo (10% padding) | Web Store listing + install dialog |
 
-All three are generated from the master at `icons/source/webcheckr-logo.png` with high-quality bicubic resampling and a transparent background. Padding decreases at smaller sizes so the mark stays legible.
+32/48/128 are generated from `icons/source/webcheckr-logo.png` with high-quality bicubic resampling and transparent backgrounds. Padding decreases at smaller sizes so the mark stays legible.
+
+**16×16 is a simplified variant, not a downscale.** The full logo's browser-window detail turns to mush at 16px and the checkmark washes out to near-invisible on light toolbars. The small mark keeps the same visual identity — the blue scan brackets (`#0E8EFC`) and the teal check (`#01C9AD`), both colour-sampled from the logo — and drops only the window interior. **The main WebCheckr logo is unchanged everywhere else.**
+
+> Chrome uses 16px at 1x and 32px at 2x for the toolbar, so HiDPI screens show the full logo and standard screens show the simplified mark. Both are on-brand; each is optimised for its pixel budget.
 
 **Source masters** (committed, not shipped in the zip):
 
 | File | Size | Use |
 | --- | --- | --- |
-| `icons/source/webcheckr-logo.png` | 300×272 | Icon mark — source of all three icons, README header |
+| `icons/source/webcheckr-logo.png` | 300×272 | Icon mark — source of the 32/48/128 icons and the README header |
 | `icons/source/webcheckr-logo-with-text.png` | 1075×272 | Full lockup — promo tiles, store graphics |
+| `icons/source/webcheckr-mark-small.png` | 16×16 | Simplified small mark — source of the 16px icon |
 
-- [x] PNG, transparent background, square canvas
+- [x] PNG, transparent background, square canvas — all four verified (corner alpha = 0)
 - [x] ~10% padding inside the 128×128 canvas (Google's guidance)
-- [ ] ⚠️ **The 16×16 is inherently dense.** The full mark (window + check + brackets) is legible but soft at that size — normal for a detailed logo, and consistent with the brand. If you ever want a punchier toolbar icon, supply a simplified single-element mark exported at 128×128+ and the 16px can be regenerated from that alone.
+- [x] **16×16 legibility resolved** via the simplified mark above.
 - [ ] ⚠️ **The lockup's "WebCheckr" text is pure black** (R0 G2 B14), so it disappears on dark backgrounds. Only use `webcheckr-logo-with-text.png` on light backgrounds. A white-text variant would unlock dark contexts (GitHub dark README, dark promo tiles).
 - [ ] ⚠️ **Master resolution is modest** (272px tall). Fine for all icon sizes and the 440×280 tile (downscale), but the 1400×560 marquee would require upscaling the lockup — request a larger export if you pursue featuring.
 

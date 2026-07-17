@@ -93,3 +93,22 @@ SiteQA.filterCounts = function (results, filters, mode) {
   });
   return counts;
 };
+
+/*
+ * Label for the primary filter chip. In Issues-only mode it counts issues, not
+ * every check, so calling it "All" would misdescribe the number next to it.
+ */
+SiteQA.primaryFilterLabel = function (mode) {
+  return mode === 'issues' ? 'Issues' : 'All';
+};
+
+/*
+ * A category section opens by default when it contains something to act on.
+ * Categories holding only passed/informational checks start collapsed.
+ * An explicit user toggle always wins over this default.
+ */
+SiteQA.shouldExpandCategory = function (items) {
+  return (items || []).some(function (r) {
+    return r.status === SiteQA.STATUS.FAILED || r.status === SiteQA.STATUS.WARNING;
+  });
+};

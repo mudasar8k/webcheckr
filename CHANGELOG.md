@@ -19,11 +19,17 @@ First public open-source release (early public beta). Not yet tagged or publishe
 - **Repository configuration** — `.gitignore`, `.gitattributes`, `.editorconfig`.
 - Popup footer: "Free and open source · Created by Mudassar Ahmad".
 - Accessible subtitle "Website QA Inspector" beside the header.
-- **Real brand logo.** Extension icons (16/48/128) regenerated from `icons/source/webcheckr-logo.png`, replacing the placeholder checkmarks. The popup header now shows the logo mark instead of a tinted "✓" glyph, and the README leads with it. Logo masters are committed under `icons/source/`.
+- **Real brand logo.** Extension icons regenerated from `icons/source/webcheckr-logo.png`, replacing the placeholder checkmarks. The popup header now shows the logo mark instead of a tinted "✓" glyph, and the README leads with it. Logo masters are committed under `icons/source/`.
+- **32px icon** added and declared in the manifest, so the toolbar has a dedicated HiDPI size.
+- **Simplified 16px icon** using the same visual identity (scan brackets + check, colours sampled from the logo). The full logo is unreadable at 16px; the main logo is unchanged at every other size.
+- **Category scores** now render as a compact 3×2 grid with short labels (A11y, Perf) and full names exposed via `title`/`aria-label`, replacing a compressed inline text line. Popup width is unchanged.
 
 ### Changed
 
 - **Version set to `0.1.0`** in `manifest.json` and `package.json`, marking this as an early public beta under Semantic Versioning.
+- **Primary filter chip is now mode-aware:** it reads **Issues N** in Issues-only mode (where the count excludes passed checks) and **All N** in All-results mode. Previously "All 2" sat next to a number that was not the total.
+- **Category sections auto-expand** whenever they contain a failure or warning, and start collapsed when they hold only passed/informational checks. A section the user collapses by hand now stays collapsed across filter and mode changes for as long as the popup is open.
+- **Footer and results spacing** loosened so the last result and the scrollbar no longer crowd the footer.
 - **Rebranded from "Site QA Inspector" to "WebCheckr — Website QA Inspector."** Applies to the extension header, manifest, popup title, copied reports, the on-page highlight marker, documentation, and test descriptions.
 - **WebToolkit preset hardened for public release.** Canonical and `og:url` checks now parse the URL and compare the hostname exactly, instead of pattern-matching the URL string. Remaining checks are based solely on publicly visible page behaviour.
 - `SECURITY.md` now directs reports to GitHub Private Vulnerability Reporting; `CODE_OF_CONDUCT.md` directs reports to the maintainer's GitHub profile. No private email address is published in the repository.

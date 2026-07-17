@@ -200,6 +200,98 @@ describe('filter counts', () => {
     const { results } = SiteQA.run(makeData());
     assert.equal(SiteQA.filterCounts(results, ['failed'], 'all').failed, 0);
   });
+
+  test('the primary chip reads "Issues" in issues mode and "All" in all mode', () => {
+    assert.equal(SiteQA.primaryFilterLabel('issues'), 'Issues');
+    assert.equal(SiteQA.primaryFilterLabel('all'), 'All');
+  });
+
+  test('"Issues N" counts only issues; "All N" counts every result', () => {
+    const { results } = SiteQA.run(makeData({
+      title: '',                                                            // failed
+      images: [{ src: '/a.png', hasAltAttr: false, role: '', selector: 'img' }] // warning
+    }));
+
+    const issuesCount = SiteQA.filterCounts(results, ['all'], 'issues').all;
+    const allCount = SiteQA.filterCounts(results, ['all'], 'all').all;
+
+    // "All N" is the true total of every result.
+    assert.equal(allCount, results.length);
+    // "Issues N" excludes passed checks, so it is strictly smaller here.
+    assert.ok(issuesCount < allCount);
+    assert.equal(issuesCount, SiteQA.filterResults(results, 'all', 'issues').length);
+    // And it never counts a passed check.
+    assert.ok(SiteQA.filterResults(results, 'all', 'issues').every(r => r.status !== 'passed'));
+  });
+
+  test('status and category counts stay accurate in both modes', () => {
+    const { results, summary } = SiteQA.run(makeData({
+      title: '',
+      og: { title: null, description: null, image: null, url: null, type: null },
+      twitter: {},
+      counts: { images: 0, scripts: 2, stylesheets: 1 }
+    }));
+
+    for (const mode of ['issues', 'all']) {
+      const keys = ['failed', 'warning', 'SEO', 'Social', 'Performance', 'Links', 'Accessibility'];
+      const counts = SiteQA.filterCounts(results, keys, mode);
+      for (const k of keys) {
+        assert.equal(counts[k], SiteQA.filterResults(results, k, mode).length, `${k} count wrong in ${mode} mode`);
+      }
+    }
+
+    // Status chips are mode-independent: failures/warnings are never hidden.
+    assert.equal(SiteQA.filterCounts(results, ['failed'], 'issues').failed,
+      SiteQA.filterCounts(results, ['failed'], 'all').failed);
+    assert.equal(SiteQA.filterCounts(results, ['warning'], 'issues').warning,
+      SiteQA.filterCounts(results, ['warning'], 'all').warning);
+
+    // And they agree with the summary.
+    assert.equal(SiteQA.filterCounts(results, ['failed'], 'all').failed, summary.failed);
+    assert.equal(SiteQA.filterCounts(results, ['warning'], 'all').warning, summary.warnings);
+  });
+});
+
+describe('category auto-expansion', () => {
+  const r = (status, severity) => ({ id: 'x' + Math.random(), status, severity, category: 'SEO' });
+
+  test('a category with a failure expands', () => {
+    assert.equal(SiteQA.shouldExpandCategory([r('failed', 'high'), r('passed', 'passed')]), true);
+  });
+
+  test('a category with a warning expands', () => {
+    assert.equal(SiteQA.shouldExpandCategory([r('warning', 'low'), r('passed', 'passed')]), true);
+  });
+
+  test('a passed-only category stays collapsed', () => {
+    assert.equal(SiteQA.shouldExpandCategory([r('passed', 'passed'), r('passed', 'passed')]), false);
+  });
+
+  test('an informational-only category stays collapsed', () => {
+    assert.equal(SiteQA.shouldExpandCategory([r('informational', 'informational')]), false);
+  });
+
+  test('a mixed passed/informational category stays collapsed', () => {
+    assert.equal(SiteQA.shouldExpandCategory([r('passed', 'passed'), r('informational', 'informational')]), false);
+  });
+
+  test('an empty category does not throw', () => {
+    assert.equal(SiteQA.shouldExpandCategory([]), false);
+    assert.equal(SiteQA.shouldExpandCategory(undefined), false);
+  });
+
+  test('on a real scan, every category holding an issue expands', () => {
+    const { results } = SiteQA.run(makeData({ title: '', viewport: null }));
+    const byCat = {};
+    for (const x of results) (byCat[x.category] ||= []).push(x);
+
+    for (const [cat, items] of Object.entries(byCat)) {
+      const hasIssue = items.some(i => i.status === 'failed' || i.status === 'warning');
+      assert.equal(SiteQA.shouldExpandCategory(items), hasIssue, `${cat} expansion default wrong`);
+    }
+    // Basic has the missing title + viewport, so it must open.
+    assert.equal(SiteQA.shouldExpandCategory(byCat.Basic), true);
+  });
 });
 
 describe('page health summary', () => {

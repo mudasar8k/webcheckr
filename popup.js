@@ -29,10 +29,20 @@
     showAllAffected: {}    // result id -> true
   };
 
+  /* Short labels for narrow chips; full text stays in title/aria-label. */
+  var CATEGORY_LABELS = {
+    'Basic': 'Basic',
+    'SEO': 'SEO',
+    'Accessibility': 'A11y',
+    'Links': 'Links',
+    'Performance': 'Perf',
+    'Best Practices': 'Best Practices'
+  };
+
   var el = {};
   ['pageTitle', 'pageUrl', 'detectNote', 'presetBadge', 'summary', 'scoreRing', 'scoreValue',
-    'countPass', 'countWarn', 'countFail', 'health', 'runBtn', 'copyBtn', 'clearBtn',
-    'modeRow', 'modeIssues', 'modeAll', 'modeHint', 'tabs', 'results', 'toast'
+    'countPass', 'countWarn', 'countFail', 'catScores', 'health', 'runBtn', 'copyBtn', 'clearBtn',
+    'modeRow', 'modeIssues', 'modeAll', 'tabs', 'results', 'toast'
   ].forEach(function (id) { el[id] = document.getElementById(id); });
 
   function esc(s) {
@@ -73,10 +83,31 @@
       var n = counts[f.key];
       // Hide category chips that have nothing in the current mode.
       if (n === 0 && f.key !== 'all' && f.key !== 'failed' && f.key !== 'warning') return;
+      // In Issues-only mode the primary chip counts issues, not every check,
+      // so it reads "Issues 2" rather than the misleading "All 2".
+      var label = f.key === 'all' ? SiteQA.primaryFilterLabel(state.mode) : f.label;
       html += '<button class="tab' + (state.filter === f.key ? ' active' : '') + '" data-filter="' +
-        esc(f.key) + '">' + esc(f.label) + '<span class="n">' + n + '</span></button>';
+        esc(f.key) + '">' + esc(label) + '<span class="n">' + n + '</span></button>';
     });
     el.tabs.innerHTML = html;
+  }
+
+  function renderCategoryScores() {
+    var cats = (state.summary && state.summary.categories) || [];
+    if (!cats.length) { el.catScores.hidden = true; return; }
+
+    var html = '';
+    cats.forEach(function (c) {
+      var band = c.score >= 85 ? 'good' : (c.score >= 60 ? 'warn' : 'bad');
+      var short = CATEGORY_LABELS[c.category] || c.category;
+      var full = c.category + ': ' + c.score + ' out of 100';
+      html += '<div class="cat" title="' + esc(full) + '" aria-label="' + esc(full) + '">' +
+        '<span class="cat-label">' + esc(short) + '</span>' +
+        '<span class="cat-score ' + band + '">' + c.score + '</span>' +
+        '</div>';
+    });
+    el.catScores.innerHTML = html;
+    el.catScores.hidden = false;
   }
 
   function affectedHtml(r) {
@@ -160,12 +191,12 @@
       var failed = items.filter(function (r) { return r.status === 'failed'; }).length;
       var warned = items.filter(function (r) { return r.status === 'warning'; }).length;
 
-      // Default: expand anything with a failure/warning; collapse pass-only
-      // groups while in Issues-only mode.
-      var hasIssues = failed + warned > 0;
+      // Default: expand anything with a failure/warning; collapse categories
+      // holding only passed/informational checks. An explicit user toggle is
+      // remembered for as long as the popup stays open and always wins.
       var collapsed = state.collapsed[cat] != null
         ? state.collapsed[cat]
-        : (!hasIssues && state.mode === 'issues');
+        : !SiteQA.shouldExpandCategory(items);
 
       var meta = items.length + ' check' + (items.length === 1 ? '' : 's');
       if (failed) meta += ' · ' + failed + ' failed';
@@ -213,9 +244,7 @@
     el.countFail.textContent = s.failed;
     el.health.textContent = state.health;
 
-    var cats = (s.categories || []).map(function (c) { return c.category + ' ' + c.score; }).join(' · ');
-    el.modeHint.textContent = cats;
-    el.modeHint.title = 'Category scores: ' + cats;
+    renderCategoryScores();
   }
 
   function updatePresetBadge() {
@@ -350,6 +379,7 @@
     state.health = ''; state.filter = 'all'; state.mode = 'issues';
     state.collapsed = {}; state.expandedAffected = {}; state.showAllAffected = {};
     el.summary.hidden = true;
+    el.catScores.hidden = true;
     el.modeRow.hidden = true;
     el.tabs.hidden = true;
     el.health.hidden = true;
@@ -373,7 +403,8 @@
     var b = e.target.closest('.mode');
     if (!b) return;
     state.mode = b.dataset.mode;
-    state.collapsed = {}; // let defaults re-apply for the new mode
+    // Collapse state is deliberately preserved across a mode switch: a section
+    // the user closed by hand stays closed while the popup is open.
     setModeButtons();
     renderTabs();
     render();
