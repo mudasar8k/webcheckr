@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="popup.css">
+  <title>WebCheckr — Website QA Inspector</title>
+</head>
+<body>
+  <header class="header">
+    <div class="brand" title="WebCheckr — Website QA Inspector">
+      <img class="logo" src="icons/icon48.png" alt="" aria-hidden="true" width="22" height="22">
+      <span class="brand-name">WebCheckr</span>
+      <span class="brand-sub">Website QA Inspector</span>
+    </div>
+    <div class="preset-badge" id="presetBadge" hidden></div>
+  </header>
+
+  <section class="page-info">
+    <div class="page-title" id="pageTitle">—</div>
+    <div class="page-url" id="pageUrl">Loading current tab…</div>
+    <div class="detect-note" id="detectNote" hidden></div>
+  </section>
+
+  <section class="summary" id="summary" hidden>
+    <div class="score-ring" id="scoreRing">
+      <span class="score-value" id="scoreValue">–</span>
+      <span class="score-label">score</span>
+    </div>
+    <div class="counts">
+      <div class="count pass"><span id="countPass">0</span><small>Passed</small></div>
+      <div class="count warn"><span id="countWarn">0</span><small>Warnings</small></div>
+      <div class="count fail"><span id="countFail">0</span><small>Failed</small></div>
+    </div>
+  </section>
+
+  <p class="health" id="health" hidden></p>
+
+  <section class="actions">
+    <button id="runBtn" class="btn btn-primary">Run QA</button>
+    <button id="copyBtn" class="btn" disabled>Copy Report</button>
+    <button id="clearBtn" class="btn" disabled>Clear</button>
+  </section>
+
+  <div class="mode-row" id="modeRow" hidden>
+    <div class="mode-toggle" role="group" aria-label="Result display">
+      <button class="mode active" id="modeIssues" data-mode="issues">Issues only</button>
+      <button class="mode" id="modeAll" data-mode="all">All results</button>
+    </div>
+    <span class="mode-hint" id="modeHint"></span>
+  </div>
+
+  <nav class="tabs" id="tabs" hidden></nav>
+
+  <main class="results" id="results">
+    <div class="empty">Click <strong>Run QA</strong> to inspect this page.</div>
+  </main>
+
+  <footer class="footer">
+    <span>Free and open source</span>
+    <span class="footer-sep">·</span>
+    <span>Created by Mudassar Ahmad</span>
+  </footer>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <!-- Load order: namespace -> checks -> presets -> utils -> popup. -->
+  <script src="utils/dom.js"></script>
+  <script src="checks/basic.js"></script>
+  <script src="checks/seo.js"></script>
+  <script src="checks/social.js"></script>
+  <script src="checks/links.js"></script>
+  <script src="checks/buttons.js"></script>
+  <script src="checks/downloads.js"></script>
+  <script src="checks/accessibility.js"></script>
+  <script src="checks/content-quality.js"></script>
+  <script src="checks/performance.js"></script>
+  <script src="utils/scoring.js"></script>
+  <script src="utils/detect.js"></script>
+  <script src="presets/webtoolkit.js"></script>
+  <script src="presets/platforms.js"></script>
+  <script src="presets/generic.js"></script>
+  <script src="utils/runner.js"></script>
+  <script src="utils/highlight.js"></script>
+  <script src="utils/report.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

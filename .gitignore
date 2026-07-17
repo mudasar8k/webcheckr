@@ -1,0 +1,73 @@
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Packaged extension artifacts
+*.zip
+*.crx
+*.pem
+web-ext-artifacts/
+dist/
+build/
+release/
+
+# Private keys / credentials
+*.key
+*.p12
+*.pfx
+secrets.json
+credentials.json
+
+# Browser test profiles
+.chrome-profile/
+chrome-profile/
+user-data-dir/
+.web-ext-profile/
+
+# Test / coverage output
+coverage/
+.nyc_output/
+test-results/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Editor / IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# NOTE: this extension has no build step. Every source file at the repo root
+# (manifest.json, popup.*, content.js, checks/, presets/, utils/, icons/) is
+# required to load the unpacked extension and must NOT be ignored.

@@ -1,0 +1,142 @@
+name: Bug report
+description: Something in WebCheckr is broken or behaves incorrectly
+title: "[Bug]: "
+labels: ["bug", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug.
+
+        ⚠️ **Do not report security issues here.** Please follow [SECURITY.md](../blob/main/SECURITY.md) instead.
+
+        ℹ️ If a *website you inspected* has a problem, that is an issue with that website — this tracker is for bugs in WebCheckr itself. If WebCheckr reported something **incorrectly** (a false positive), that *is* a bug and belongs here.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the bug.
+    validations:
+      required: true
+
+  - type: input
+    id: chrome-version
+    attributes:
+      label: Browser version
+      description: "Chrome → ⋮ → Help → About Google Chrome. Please include the browser name if not Chrome (e.g. Edge, Brave)."
+      placeholder: "Chrome 127.0.6533.89 (64-bit)"
+    validations:
+      required: true
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: WebCheckr version
+      description: "Shown on the extension card in chrome://extensions, or the `version` field in manifest.json."
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: website-type
+    attributes:
+      label: Website type
+      description: What kind of site were you inspecting?
+      options:
+        - WordPress
+        - WooCommerce
+        - Shopify
+        - Laravel
+        - Next.js / React
+        - Angular / Vue
+        - Static HTML/CSS
+        - SaaS application
+        - E-commerce store
+        - Blog
+        - Business website / landing page
+        - Educational / nonprofit / government
+        - Local development (localhost)
+        - Other / not sure
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Page URL (optional)
+      description: "A public URL that reproduces the issue, if you can share one. **Do not post private, internal, or credentialed URLs.**"
+      placeholder: "https://example.com/some-page"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: all-sites
+    attributes:
+      label: Does this happen on all sites?
+      options:
+        - "Yes — every site I try"
+        - "No — only on this specific site"
+        - "Sometimes / inconsistent"
+        - "Not sure, haven't tested others"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Tell us exactly how to see the problem.
+      placeholder: |
+        1. Go to '...'
+        2. Click the WebCheckr icon
+        3. Click 'Run QA'
+        4. Look at the '...' section
+        5. See the error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: What actually happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: "Drag and drop an image here. Please blur or crop anything private."
+    validations:
+      required: false
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors (optional)
+      description: "Right-click the popup → Inspect → Console. Paste any red errors here."
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I reloaded the extension in `chrome://extensions` and the issue still occurs.
+          required: true
+        - label: I searched existing issues and this has not been reported.
+          required: true
+        - label: This is not a security vulnerability report.
+          required: true

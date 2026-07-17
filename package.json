@@ -1,0 +1,32 @@
+{
+  "name": "webcheckr",
+  "version": "0.1.0",
+  "private": false,
+  "description": "WebCheckr — Website QA Inspector. A free and open-source Chrome extension that inspects webpages for common SEO, accessibility, links, performance, usability, and website quality issues.",
+  "license": "MIT",
+  "author": "Mudassar Ahmad",
+  "homepage": "https://github.com/mudasar8k/webcheckr#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mudasar8k/webcheckr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mudasar8k/webcheckr/issues"
+  },
+  "keywords": [
+    "chrome-extension",
+    "website-qa",
+    "quality-assurance",
+    "seo",
+    "accessibility",
+    "web-performance",
+    "developer-tools",
+    "open-source"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test \"tests/*.test.mjs\""
+  }
+}

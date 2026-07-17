@@ -1,0 +1,27 @@
+# Normalize line endings: LF in the repository, native on checkout.
+* text=auto eol=lf
+
+# Explicitly text
+*.js      text eol=lf
+*.mjs     text eol=lf
+*.json    text eol=lf
+*.html    text eol=lf
+*.css     text eol=lf
+*.md      text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+LICENSE   text eol=lf
+
+# Explicitly binary (never diff or convert)
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.webp    binary
+*.ico     binary
+*.zip     binary
+*.crx     binary
+
+# Keep noise out of GitHub's language stats and PR diffs.
+tests/** linguist-detectable=true
+docs/**  linguist-documentation

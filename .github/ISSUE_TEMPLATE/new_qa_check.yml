@@ -1,0 +1,136 @@
+name: New QA check
+description: Propose a new quality/SEO/accessibility check for WebCheckr
+title: "[Check]: "
+labels: ["new-check", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a new check. Good checks are **precise** — a noisy check is worse than no check, because it trains people to ignore the results.
+
+        Please fill this in as completely as you can. See [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md#adding-a-qa-rule) for how checks are implemented.
+
+  - type: input
+    id: name
+    attributes:
+      label: Check name
+      description: A short, human-readable title as it would appear in the popup.
+      placeholder: "Image alt text"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Which check module this belongs to.
+      options:
+        - Basic
+        - SEO
+        - Social
+        - Links
+        - Buttons
+        - Downloads
+        - Accessibility
+        - Content
+        - Performance
+        - New category (explain below)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Suggested severity
+      description: "Severity is the only input to scoring. Critical −15, High −8, Medium −4, Low −1, Informational 0."
+      options:
+        - "critical — major functionality or security-related failure"
+        - "high — important SEO/accessibility/broken-resource/usability issue"
+        - "medium — meaningful quality issue that should be fixed"
+        - "low — minor improvement"
+        - "informational — observation only, no score deduction"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: preset
+    attributes:
+      label: Which preset?
+      options:
+        - "Generic — should run on every website"
+        - "WordPress"
+        - "WooCommerce"
+        - "Shopify"
+        - "Next.js"
+        - "WebToolkit"
+        - "Other / not sure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: detection
+    attributes:
+      label: Detection logic
+      description: "How would WebCheckr detect this from the page snapshot? Be specific — which elements, attributes, or text. Remember: DOM only, no network requests."
+      placeholder: |
+        For each visible <img>:
+          - skip if role="presentation" or role="none"
+          - flag if the alt attribute is absent (alt="" is valid for decorative images)
+    validations:
+      required: true
+
+  - type: textarea
+    id: false-positives
+    attributes:
+      label: False-positive risks
+      description: "When would this fire incorrectly? What legitimate patterns might look like a failure? How should the check be narrowed to avoid them?"
+      placeholder: |
+        - Decorative images legitimately use alt="" and must not be flagged.
+        - Icon fonts / SVG sprites aren't <img> and are out of scope.
+    validations:
+      required: true
+
+  - type: textarea
+    id: safety
+    attributes:
+      label: Safe implementation details
+      description: "Confirm how this stays passive and local, and note any performance considerations on large pages."
+      placeholder: |
+        Reads only data already collected by content.js. No extra DOM scan,
+        no network request, no page modification. O(n) over existing images array.
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example pages
+      description: "Public URLs where this issue can be observed, and ideally one where it should NOT fire (to verify no false positive). Do not post private or internal URLs."
+      placeholder: |
+        Fires: https://example.com/gallery
+        Should not fire: https://example.com/about
+    validations:
+      required: true
+
+  - type: textarea
+    id: recommendation
+    attributes:
+      label: Suggested recommendation
+      description: "The 'Fix:' text shown to the user. One actionable sentence."
+      placeholder: "Add descriptive alt text, or alt=\"\" for purely decorative images."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety-checks
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: This check is passive and read-only — it makes no network requests and does not modify the page.
+          required: true
+        - label: This check reads only the existing page snapshot (no per-rule DOM re-scan).
+          required: true
+        - label: This check does not read password fields or form input values.
+          required: true
+        - label: If it targets a specific site, it uses exact hostname matching.
+          required: false

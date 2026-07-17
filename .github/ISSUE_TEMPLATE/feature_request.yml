@@ -1,0 +1,74 @@
+name: Feature request
+description: Suggest an idea or improvement for WebCheckr
+title: "[Feature]: "
+labels: ["enhancement", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement.
+
+        💡 Proposing a **new QA check**? Please use the [New QA check](?template=new_qa_check.yml) template instead — it asks the specific questions a check needs.
+
+        ⚠️ WebCheckr is a **read-only, local, informational** tool. Requests for crawling, link fetching, login testing, or any security scanning are out of scope — see [SECURITY.md](../blob/main/SECURITY.md).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the pain point. What are you unable to do today?
+      placeholder: "When I QA a client site before launch, I can't ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What would you like WebCheckr to do?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Popup UI / UX
+        - Scoring or severity
+        - Reporting / export
+        - Platform preset (WordPress, Shopify, etc.)
+        - Affected elements / highlighting
+        - Filtering
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any other approaches you thought about, or workarounds you use now.
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Mockups, screenshots, or links to how other tools handle this.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This does not require network requests, crawling, or fetching external resources.
+          required: true
+        - label: This does not involve login testing, exploitation, or security scanning.
+          required: true
+        - label: I searched existing issues and this has not been requested.
+          required: true
