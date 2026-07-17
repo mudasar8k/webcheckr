@@ -20,9 +20,8 @@ First public open-source release (early public beta). Not yet tagged or publishe
 - **Repository configuration** — `.gitignore`, `.gitattributes`, `.editorconfig`.
 - Popup footer: "Free and open source · Created by Mudassar Ahmad".
 - Accessible subtitle "Website QA Inspector" beside the header.
-- **Real brand logo.** Extension icons regenerated from `icons/source/webcheckr-logo.png`, replacing the placeholder checkmarks. The popup header now shows the logo mark instead of a tinted "✓" glyph, and the README leads with it. Logo masters are committed under `icons/source/`.
+- **Real brand logo.** Extension icons (16/32/48/128) generated from `icons/source/webcheckr-logo.png`, replacing the placeholder checkmarks. The popup header now shows the logo mark instead of a tinted "✓" glyph, and the README leads with it. Logo masters are committed under `icons/source/`. The artwork is a single flat `#2563EB` — matching the UI's `--primary` token — and stays legible at every size, so all four icons are the same mark with no simplified variant.
 - **32px icon** added and declared in the manifest, so the toolbar has a dedicated HiDPI size.
-- **Simplified 16px icon** using the same visual identity (scan brackets + check, colours sampled from the logo). The full logo is unreadable at 16px; the main logo is unchanged at every other size.
 - **Category scores** now render as a compact 3×2 grid with short labels (A11y, Perf) and full names exposed via `title`/`aria-label`, replacing a compressed inline text line. Popup width is unchanged.
 
 ### Changed
