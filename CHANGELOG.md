@@ -15,7 +15,8 @@ First public open-source release (early public beta). Not yet tagged or publishe
 
 - **Open-source project files** — MIT `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `PRIVACY.md`, `CHANGELOG.md`.
 - **GitHub templates** — bug report, feature request, and new QA check issue forms, plus a pull request template with a required safety checklist.
-- **Documentation** — `docs/PERMISSIONS.md` (per-permission justifications), `docs/CHROME_WEB_STORE_LISTING.md`, `docs/STORE_ASSETS_CHECKLIST.md`, `docs/GITHUB_SETUP.md`.
+- **Documentation** — `docs/PERMISSIONS.md` (per-permission justifications), `docs/CHROME_WEB_STORE_LISTING.md`, `docs/CHROME_WEB_STORE_SUBMISSION_VALUES.md`, `docs/FIRST_STORE_SUBMISSION_CHECKLIST.md`, `docs/STORE_ASSETS_CHECKLIST.md`, `docs/GITHUB_SETUP.md`.
+- **Store packaging script** (`npm run package:store`) — builds `dist/webcheckr-v<version>/` from an explicit runtime allowlist and zips it to `releases/webcheckr-v<version>.zip` with `manifest.json` at the ZIP root. Cross-platform, zero-dependency (the ZIP is written with `node:zlib`), and deterministic — identical sources produce a byte-identical archive. The build fails on version mismatch, a missing runtime file, a permission change, a forbidden file, or any remotely hosted code.
 - **Repository configuration** — `.gitignore`, `.gitattributes`, `.editorconfig`.
 - Popup footer: "Free and open source · Created by Mudassar Ahmad".
 - Accessible subtitle "Website QA Inspector" beside the header.
