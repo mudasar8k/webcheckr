@@ -5,7 +5,7 @@
 
 ## Summary
 
-WebCheckr analyzes the active webpage **after you start an inspection**, processes everything **locally in your browser**, and **sends nothing anywhere**.
+WebCheckr temporarily accesses website content on the active page only after the user requests an inspection. It processes everything locally in your browser and sends nothing anywhere.
 
 ## What WebCheckr does
 
@@ -35,6 +35,8 @@ When you click **Run QA**, WebCheckr reads a snapshot of the current page in ord
 - Performance timings from the browser's Performance API
 
 This snapshot is held in memory, analyzed, and then discarded. It is never written to disk and never sent off your machine.
+
+For Chrome Web Store disclosure purposes, this information is categorized as "Website content." WebCheckr accesses it only to provide the user-requested webpage inspection, processes it locally, and does not transmit or retain it.
 
 ### Sensitive data explicitly excluded
 
@@ -70,6 +72,10 @@ WebCheckr collects no personal data from anyone, including children.
 ## Changes to this policy
 
 Any change to this policy will be committed to the public repository and reflected in [`CHANGELOG.md`](CHANGELOG.md). If WebCheckr ever adds a feature that makes a network request, this policy will be updated **before** that feature ships, and the change will be called out in the release notes.
+
+## Chrome Web Store Limited Use
+
+WebCheckr's use of information received through Chrome APIs complies with the Chrome Web Store User Data Policy, including the Limited Use requirements. Website content is accessed only to provide the user-requested QA inspection and related highlighting features.
 
 ## Contact
 
